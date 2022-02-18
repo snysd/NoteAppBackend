@@ -10,7 +10,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using NotesApi.Models;
+using NotesApi.Services;
 
 namespace NotesApi
 {
@@ -26,6 +29,13 @@ namespace NotesApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<NoteDatabaseSettings>(
+            Configuration.GetSection(nameof(NoteDatabaseSettings)));
+
+            services.AddSingleton<INoteDatabaseSettings>(sp =>
+            sp.GetRequiredService<IOptions<NoteDatabaseSettings>>().Value);
+
+            services.AddSingleton<NoteService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
