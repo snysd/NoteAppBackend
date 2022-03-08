@@ -34,15 +34,15 @@ namespace NotesApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Note> Create(Note note)
+        public ActionResult<List<Note>> Create(Note note)
         {
             _noteService.Create(note);
 
-            return CreatedAtRoute("GetNote", new { id = note.Id.ToString() }, note);
+            return _noteService.Get();
         }
 
         [HttpPut("{id:length(24)}")]
-        public IActionResult Update(string id, Note noteIn)
+        public ActionResult<List<Note>> Update(string id, Note noteIn)
         {
             var note = _noteService.Get(id);
 
@@ -53,11 +53,11 @@ namespace NotesApi.Controllers
 
             _noteService.Update(id, noteIn);
 
-            return NoContent();
+            return _noteService.Get();
         }
 
         [HttpDelete("{id:length(24)}")]
-        public IActionResult Delete(string id)
+        public ActionResult<List<Note>> Delete(string id)
         {
             var note = _noteService.Get(id);
 
@@ -68,7 +68,7 @@ namespace NotesApi.Controllers
 
             _noteService.Remove(note.Id);
 
-            return NoContent();
+            return _noteService.Get();
         }
     }
 }
