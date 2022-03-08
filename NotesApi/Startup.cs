@@ -30,7 +30,7 @@ namespace NotesApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<NoteDatabaseSettings>(
-            Configuration.GetSection(nameof(NoteDatabaseSettings)));
+                Configuration.GetSection(nameof(NoteDatabaseSettings)));
 
             services.AddSingleton<INoteDatabaseSettings>(sp =>
             sp.GetRequiredService<IOptions<NoteDatabaseSettings>>().Value);
